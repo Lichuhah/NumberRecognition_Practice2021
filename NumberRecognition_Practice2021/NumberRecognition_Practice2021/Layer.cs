@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NumberRecognition_Practice2021
 {
+    [Serializable]
     class Layer
     {
         public List<Neuron> neurons;

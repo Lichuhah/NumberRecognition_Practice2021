@@ -88,13 +88,15 @@ namespace NumberRecognition_Practice2021
         {
             int inputCount = 150;
             int outputCount = 9;
-            int[] net_def = new int[] { inputCount, 100, 30, 10, outputCount };
+            int[] net_def = new int[] { inputCount, 80, outputCount };
             p = new Perceptron(net_def);
 
-            while (!p.Learn(input, output, 0.3, 0.01, 1000, 10000))
+            while (!p.Learn(input, output, 0.3, 0.1, 2000, 10000))
             {
                 p = new Perceptron(net_def);
             }
+
+            p.save_net(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.bin");
         }
 
         static double normalize(double val, double min, double max)

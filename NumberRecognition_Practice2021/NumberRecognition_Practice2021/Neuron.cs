@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NumberRecognition_Practice2021
 {
+    [Serializable]
     class Neuron
     {
         public double[] weights; //веса 
@@ -23,11 +24,15 @@ namespace NumberRecognition_Practice2021
 
         public Neuron(int numberOfInputs, Random r) //конструктор (кол-во входов, рандом)
         {
-            bias = 10 * r.NextDouble() - 5;
+            // bias = 10 * r.NextDouble() - 5;
+            bias = 2*r.NextDouble()-1;
+            //bias = 0;
             weights = new double[numberOfInputs];
             for (int i = 0; i < numberOfInputs; i++)
             {
-                weights[i] = 10 * r.NextDouble() - 5;
+                //weights[i] = 10 * r.NextDouble() - 5;
+                weights[i] = 2*r.NextDouble()-1;
+               // weights[i] = 0;
             }
         }
         public double Activate(double[] inputs) //активация массив входов

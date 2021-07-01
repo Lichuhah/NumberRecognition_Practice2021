@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NumberRecognition_Practice2021
 {
+    [Serializable]
     class Perceptron
     {
         List<Layer> layers;
@@ -176,12 +180,12 @@ namespace NumberRecognition_Practice2021
                 //    return true;
                 //}
 
-                //if (maxIterations <= 0)
-                //{
+                if (maxIterations <= 0)
+                {
                 //    Console.WriteLine("MINIMO LOCAL");
                 //    System.IO.File.WriteAllLines(@"LogTail.txt", log.ToArray());
-                //    return false;
-                //}
+                    return false;
+                }
 
             }
             Console.WriteLine("complete");
@@ -193,21 +197,21 @@ namespace NumberRecognition_Practice2021
 
         public void save_net(String neuralNetworkPath)
         {
-            //FileStream fs = new FileStream(neuralNetworkPath, FileMode.Create);
-            //BinaryFormatter formatter = new BinaryFormatter();
-            //try
-            //{
-            //    formatter.Serialize(fs, this);
-            //}
-            //catch (SerializationException e)
-            //{
-            //    Console.WriteLine("Failed to serialize. Reason: " + e.Message);
-            //    throw;
-            //}
-            //finally
-            //{
-            //    fs.Close();
-            //}
+            FileStream fs = new FileStream(neuralNetworkPath, FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+            try
+            {
+                formatter.Serialize(fs, this);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                fs.Close();
+            }
         }
 
         public static Perceptron Load(String neuralNetworkPath)
