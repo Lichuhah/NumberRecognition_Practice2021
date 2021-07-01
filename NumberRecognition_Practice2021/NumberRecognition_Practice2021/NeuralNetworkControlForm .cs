@@ -16,6 +16,8 @@ namespace NumberRecognition_Practice2021
         {
             InitializeComponent();
             SetSize();
+            graphics.Clear(pictureBox.BackColor);
+            pictureBox.Image = map;
         }
 
 
@@ -68,30 +70,58 @@ namespace NumberRecognition_Practice2021
         }
 
 
-
+        Perceptron p;
         List<double[]> input = new List<double[]>();
         List<double[]> output = new List<double[]>();
         private void btnAddData_Click(object sender, EventArgs e)
         {
-            pictureBox.Image.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.jpg");
-            Image outimg = ImageProcessor.ScaleImage(pictureBox.Image, 10, 15);
-            outimg.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test2.jpg");
-            Bitmap outmap = new Bitmap(outimg);
-            double[] inputs = new double[150];
+            double[] inputs = ImageProcessor.FromImageToInputs(pictureBox.Image);
             double[] outputs = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-            for (int i = 0; i < outmap.Height; i++)
-            {
-                for (int j = 0; j < outmap.Width; j++)
-                {
-                    Color color = outmap.GetPixel(j, i);
-                    double a = Convert.ToDouble(color.R + color.G + color.B) / 765;
-                    inputs[i * 10 + j] = a;
-                }
-            }
-           // outputs[0] = Convert.ToDouble(txtAddData.Text) / 10;
             outputs[Convert.ToInt32(txtAddData.Text)] = 1;
             input.Add(inputs);
             output.Add(outputs);
+
+        }
+
+        
+        private void btnTrainNetwork_Click(object sender, EventArgs e)
+        {
+            int inputCount = 150;
+            int outputCount = 9;
+            int[] net_def = new int[] { inputCount, 100, 30, 10, outputCount };
+            p = new Perceptron(net_def);
+
+            while (!p.Learn(input, output, 0.3, 0.01, 1000, 10000))
+            {
+                p = new Perceptron(net_def);
+            }
+        }
+
+        static double normalize(double val, double min, double max)
+        {
+            return (val - min) / (max - min);
+        }
+        static double inverseNormalize(double val, double min, double max)
+        {
+            return val * (max - min) + min;
+        }
+
+        private void btnCheckNumber_Click(object sender, EventArgs e)
+        {
+            double[] inputs = ImageProcessor.FromImageToInputs(pictureBox.Image);
+            double[] sal = p.Activate(inputs);
+
+            lblResult.Text = "";
+            int max = 0;
+            for (int i = 0; i < 9; i++)
+            {
+                if (sal[max] < sal[i])
+                {
+                    max = i;
+                }
+                
+            }
+            lblResult.Text = max.ToString();
         }
     }
 }

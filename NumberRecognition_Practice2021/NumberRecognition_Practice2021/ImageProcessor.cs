@@ -11,6 +11,8 @@ namespace NumberRecognition_Practice2021
     {
         static public Image ScaleImage(Image source, int width, int height)
         {
+            Point[] bgges = FindImageBordes(source);
+            source = CropImage(source, bgges);
 
             Image dest = new Bitmap(width, height);
             using (Graphics gr = Graphics.FromImage(dest))
@@ -46,6 +48,119 @@ namespace NumberRecognition_Practice2021
 
                 return dest;
             }
+        }
+
+        static public Image CropImage(Image img, Point[] points)
+        {
+            Bitmap map = new Bitmap(img);
+            int x1 = points[0].X;
+            int y1 = points[0].Y;
+            int x2 = points[1].X;
+            int y2 = points[1].Y;
+            int width = x2 - x1 + 1;
+            int height = y2 - y1 + 1;
+
+            var result = new Bitmap(width, height);
+
+            for (int i = x1; i <= x2; i++)
+                for (int j = y1; j <= y2; j++)
+                    result.SetPixel(i - x1, j - y1, map.GetPixel(i, j));
+
+            result.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\testCROP.jpg");
+            return result;
+        }
+        static public double getDoubleFromColor(Color color)
+        {
+            double a = Convert.ToDouble(color.R + color.G + color.B) / 765;
+            return a;
+        }
+        static public double[] FromImageToInputs(Image pic)
+        {
+            pic.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.jpg");
+            Image outimg = ImageProcessor.ScaleImage(pic, 10, 15);
+            outimg.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test2.jpg");
+            Bitmap outmap = new Bitmap(outimg);
+            double[] inputs = new double[150];
+
+            for (int i = 0; i < outmap.Height; i++)
+            {
+                for (int j = 0; j < outmap.Width; j++)
+                {
+                    double a = getDoubleFromColor(outmap.GetPixel(j, i));
+                    inputs[i * 10 + j] = a;
+                }
+            }
+
+            return inputs;
+        }
+
+        static public Point[] FindImageBordes(Image pic)
+        {
+            Bitmap img = new Bitmap(pic);
+            Point[] borders = new Point[2];
+            borders[0] = new Point(0, 0);
+            borders[1] = new Point(0, 0);
+            for (int i = 0; i < pic.Height; i++)
+            {
+                for (int j = 0; j < pic.Width; j++)
+                {
+                    //double temp = img.GetPixel(j, i).A / 255;
+                    double temp = getDoubleFromColor(img.GetPixel(j, i));
+                    if (temp < 0.8)
+                    {
+                        borders[0].Y = i;
+                        i = pic.Height;
+                        j = pic.Width;
+                    }
+                }
+            }
+
+            for (int i = pic.Height - 1; i > 0; i--)
+            {
+                for (int j = pic.Width - 1; j > 0; j--)
+                {
+                    //double temp = img.GetPixel(j, i).A / 255;
+                    double temp = getDoubleFromColor(img.GetPixel(j, i));
+                    if (temp < 0.8)
+                    {
+                        borders[1].Y = i;
+                        i = 0;
+                        j = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < pic.Width; i++)
+            {
+                for (int j = 0; j < pic.Height; j++)
+                {
+                    //double temp = img.GetPixel(j, i).A / 255;
+                    double temp = getDoubleFromColor(img.GetPixel(i, j));
+                    if (temp < 0.8)
+                    {
+                        borders[0].X = i;
+                        i = pic.Width;
+                        j = pic.Height;
+                    }
+                }
+            }
+
+            for (int i = pic.Width - 1; i > 0; i--)
+            {
+                for (int j = pic.Height - 1; j > 0; j--)
+                {
+                    //double temp = img.GetPixel(j, i).A / 255;
+                    double temp = getDoubleFromColor(img.GetPixel(i, j));
+                    if (temp < 0.8)
+                    {
+                        borders[1].X = i;
+                        i = 0;
+                        j = 0;
+                    }
+                }
+            }
+
+            return borders;
         }
     }
 }

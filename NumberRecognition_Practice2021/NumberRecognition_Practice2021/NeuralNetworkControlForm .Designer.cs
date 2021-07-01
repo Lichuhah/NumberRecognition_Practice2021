@@ -55,7 +55,7 @@ namespace NumberRecognition_Practice2021
             this.button6 = new System.Windows.Forms.Button();
             this.txtIdDeletedNetwork = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.button8 = new System.Windows.Forms.Button();
+            this.btnTrainNetwork = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -322,14 +322,15 @@ namespace NumberRecognition_Practice2021
             this.label5.TabIndex = 0;
             this.label5.Text = "Id:";
             // 
-            // button8
+            // btnTrainNetwork
             // 
-            this.button8.Location = new System.Drawing.Point(3, 106);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(256, 23);
-            this.button8.TabIndex = 6;
-            this.button8.Text = "Тренировать нейронную сеть";
-            this.button8.UseVisualStyleBackColor = true;
+            this.btnTrainNetwork.Location = new System.Drawing.Point(3, 106);
+            this.btnTrainNetwork.Name = "btnTrainNetwork";
+            this.btnTrainNetwork.Size = new System.Drawing.Size(256, 23);
+            this.btnTrainNetwork.TabIndex = 6;
+            this.btnTrainNetwork.Text = "Тренировать нейронную сеть";
+            this.btnTrainNetwork.UseVisualStyleBackColor = true;
+            this.btnTrainNetwork.Click += new System.EventHandler(this.btnTrainNetwork_Click);
             // 
             // label7
             // 
@@ -378,13 +379,25 @@ namespace NumberRecognition_Practice2021
             // 
             // numericUpDown3
             // 
+            this.numericUpDown3.DecimalPlaces = 2;
+            this.numericUpDown3.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.numericUpDown3.Location = new System.Drawing.Point(69, 10);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(190, 20);
             this.numericUpDown3.TabIndex = 15;
             // 
             // numericUpDown4
             // 
+            this.numericUpDown4.DecimalPlaces = 5;
             this.numericUpDown4.Location = new System.Drawing.Point(69, 44);
             this.numericUpDown4.Name = "numericUpDown4";
             this.numericUpDown4.Size = new System.Drawing.Size(190, 20);
@@ -402,7 +415,7 @@ namespace NumberRecognition_Practice2021
             this.panel7.Controls.Add(this.label7);
             this.panel7.Controls.Add(this.lblCountOfIterations);
             this.panel7.Controls.Add(this.numericUpDown5);
-            this.panel7.Controls.Add(this.button8);
+            this.panel7.Controls.Add(this.btnTrainNetwork);
             this.panel7.Controls.Add(this.label10);
             this.panel7.Controls.Add(this.numericUpDown3);
             this.panel7.Controls.Add(this.numericUpDown4);
@@ -440,6 +453,7 @@ namespace NumberRecognition_Practice2021
             this.btnCheckNumber.TabIndex = 1;
             this.btnCheckNumber.Text = "Распознать";
             this.btnCheckNumber.UseVisualStyleBackColor = true;
+            this.btnCheckNumber.Click += new System.EventHandler(this.btnCheckNumber_Click);
             // 
             // Form1
             // 
@@ -510,7 +524,7 @@ namespace NumberRecognition_Practice2021
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.NumericUpDown txtIdDeletedNetwork;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button btnTrainNetwork;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
