@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace NumberRecognition_Practice2021
 {
@@ -96,7 +100,7 @@ namespace NumberRecognition_Practice2021
                 p = new Perceptron(net_def);
             }
 
-            p.save_net(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.bin");
+           // p.save_net(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.bin");
         }
 
         static double normalize(double val, double min, double max)
@@ -124,6 +128,42 @@ namespace NumberRecognition_Practice2021
                 
             }
             lblResult.Text = max.ToString();
+        }
+
+        private void btnCreateNewNetwork_Click(object sender, EventArgs e)
+        {
+            Network network = new Network();
+            network.Name = txtNewNetworkName.Text;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, p);
+                network.Data = ms.ToArray();
+            }
+            string json = JsonConvert.SerializeObject(network);
+            var WebClient = new WebClient();
+            WebClient.Encoding = Encoding.UTF8;
+            WebClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            string response = WebClient.UploadString("https://localhost:44387/api/Network", json);
+        }
+
+        private void cmbNetworkSelection_Click(object sender, EventArgs e)
+        {
+            var WebClient = new WebClient();
+            WebClient.Encoding = Encoding.UTF8;
+            string json = WebClient.DownloadString("https://localhost:44387/api/Network");
+            List<Network> things = JsonConvert.DeserializeObject<List<Network>>(json);
+            cmbNetworkSelection.DataSource = things;
+            cmbNetworkSelection.DisplayMember = "Name";
+
+            byte[] data = things[0].Data;
+            using (MemoryStream ms = new MemoryStream(data))
+            {
+                var formatter = new BinaryFormatter();
+                ms.Seek(0, SeekOrigin.Begin);
+                p = (Perceptron)formatter.Deserialize(ms);
+            }
+               
         }
     }
 }

@@ -226,6 +226,7 @@ namespace NumberRecognition_Practice2021
             this.cmbNetworkSelection.Name = "cmbNetworkSelection";
             this.cmbNetworkSelection.Size = new System.Drawing.Size(121, 21);
             this.cmbNetworkSelection.TabIndex = 1;
+            this.cmbNetworkSelection.Click += new System.EventHandler(this.cmbNetworkSelection_Click);
             // 
             // label3
             // 
@@ -270,6 +271,7 @@ namespace NumberRecognition_Practice2021
             this.btnCreateNewNetwork.TabIndex = 2;
             this.btnCreateNewNetwork.Text = "Создать нейронную сеть";
             this.btnCreateNewNetwork.UseVisualStyleBackColor = true;
+            this.btnCreateNewNetwork.Click += new System.EventHandler(this.btnCreateNewNetwork_Click);
             // 
             // txtNewNetworkName
             // 
