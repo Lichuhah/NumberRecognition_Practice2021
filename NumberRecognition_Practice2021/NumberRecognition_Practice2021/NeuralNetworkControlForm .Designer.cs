@@ -38,8 +38,8 @@ namespace NumberRecognition_Practice2021
             this.button7 = new System.Windows.Forms.Button();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.btnAddData = new System.Windows.Forms.Button();
+            this.txtAddData = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnNetworkSelection = new System.Windows.Forms.Button();
@@ -141,8 +141,8 @@ namespace NumberRecognition_Practice2021
             this.panel2.Controls.Add(this.button7);
             this.panel2.Controls.Add(this.numericUpDown2);
             this.panel2.Controls.Add(this.label6);
-            this.panel2.Controls.Add(this.button3);
-            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.btnAddData);
+            this.panel2.Controls.Add(this.txtAddData);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Location = new System.Drawing.Point(288, 96);
             this.panel2.Name = "panel2";
@@ -174,21 +174,22 @@ namespace NumberRecognition_Practice2021
             this.label6.TabIndex = 3;
             this.label6.Text = "Id:";
             // 
-            // button3
+            // btnAddData
             // 
-            this.button3.Location = new System.Drawing.Point(3, 45);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(256, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Добавить значение";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnAddData.Location = new System.Drawing.Point(3, 45);
+            this.btnAddData.Name = "btnAddData";
+            this.btnAddData.Size = new System.Drawing.Size(256, 23);
+            this.btnAddData.TabIndex = 2;
+            this.btnAddData.Text = "Добавить значение";
+            this.btnAddData.UseVisualStyleBackColor = true;
+            this.btnAddData.Click += new System.EventHandler(this.btnAddData_Click);
             // 
-            // textBox1
+            // txtAddData
             // 
-            this.textBox1.Location = new System.Drawing.Point(68, 13);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(191, 20);
-            this.textBox1.TabIndex = 1;
+            this.txtAddData.Location = new System.Drawing.Point(68, 13);
+            this.txtAddData.Name = "txtAddData";
+            this.txtAddData.Size = new System.Drawing.Size(191, 20);
+            this.txtAddData.TabIndex = 1;
             // 
             // label2
             // 
@@ -489,8 +490,8 @@ namespace NumberRecognition_Practice2021
         private System.Windows.Forms.Button btnClearPictureBox;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnAddData;
+        private System.Windows.Forms.TextBox txtAddData;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button btnNetworkSelection;
