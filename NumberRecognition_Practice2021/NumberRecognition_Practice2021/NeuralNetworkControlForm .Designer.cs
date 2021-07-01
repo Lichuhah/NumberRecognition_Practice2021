@@ -93,6 +93,9 @@ namespace NumberRecognition_Practice2021
             this.pictureBox.Size = new System.Drawing.Size(200, 300);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            this.pictureBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseDown);
+            this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
+            this.pictureBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseUp);
             // 
             // label1
             // 
@@ -120,6 +123,7 @@ namespace NumberRecognition_Practice2021
             this.btnClearPictureBox.TabIndex = 3;
             this.btnClearPictureBox.Text = "Очистить";
             this.btnClearPictureBox.UseVisualStyleBackColor = true;
+            this.btnClearPictureBox.Click += new System.EventHandler(this.btnClearPictureBox_Click);
             // 
             // panel1
             // 
