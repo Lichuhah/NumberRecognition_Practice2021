@@ -7,15 +7,18 @@ namespace API.Models
 {
     public class Picture
     {
-        int Id { get; set; }
-        int Data { get; set; }
-        byte[] Image { get; set; }
+        public int Id { get; set; }
+        public int Value { get; set; }
+        public byte[] Image { get; set; }
     }
     public class DataSet
     {
-        int Id { get; set; }
+        public int Id { get; set; }
+        public List<Picture> Pictures { get; set; }
 
-        string Name { get; set; }
-        List<Picture> Pictures { get; set; }
+        public DataSet()
+        {
+            Pictures = new List<Picture>();
+        }
     }
 }

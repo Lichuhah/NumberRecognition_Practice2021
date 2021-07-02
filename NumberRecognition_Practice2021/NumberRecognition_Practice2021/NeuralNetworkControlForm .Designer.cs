@@ -52,8 +52,7 @@ namespace NumberRecognition_Practice2021
             this.txtNewNetworkName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.button6 = new System.Windows.Forms.Button();
-            this.txtIdDeletedNetwork = new System.Windows.Forms.NumericUpDown();
+            this.btnDeleteNetwork = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.btnTrainNetwork = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
@@ -68,6 +67,8 @@ namespace NumberRecognition_Practice2021
             this.panel8 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.btnCheckNumber = new System.Windows.Forms.Button();
+            this.cmbNetworkDelete = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -77,7 +78,6 @@ namespace NumberRecognition_Practice2021
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtIdDeletedNetwork)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
@@ -218,6 +218,7 @@ namespace NumberRecognition_Practice2021
             this.btnNetworkSelection.TabIndex = 2;
             this.btnNetworkSelection.Text = "Выбрать нейронную сеть";
             this.btnNetworkSelection.UseVisualStyleBackColor = true;
+            this.btnNetworkSelection.Click += new System.EventHandler(this.btnNetworkSelection_Click);
             // 
             // cmbNetworkSelection
             // 
@@ -247,6 +248,8 @@ namespace NumberRecognition_Practice2021
             // 
             // dataGridView
             // 
+            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView.Location = new System.Drawing.Point(7, 4);
             this.dataGridView.Name = "dataGridView";
@@ -291,29 +294,23 @@ namespace NumberRecognition_Practice2021
             // 
             // panel6
             // 
-            this.panel6.Controls.Add(this.button6);
-            this.panel6.Controls.Add(this.txtIdDeletedNetwork);
+            this.panel6.Controls.Add(this.cmbNetworkDelete);
+            this.panel6.Controls.Add(this.btnDeleteNetwork);
             this.panel6.Controls.Add(this.label5);
             this.panel6.Location = new System.Drawing.Point(396, 15);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(162, 75);
             this.panel6.TabIndex = 9;
             // 
-            // button6
+            // btnDeleteNetwork
             // 
-            this.button6.Location = new System.Drawing.Point(7, 40);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(155, 23);
-            this.button6.TabIndex = 2;
-            this.button6.Text = "Удалить нейронную сеть";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // txtIdDeletedNetwork
-            // 
-            this.txtIdDeletedNetwork.Location = new System.Drawing.Point(48, 10);
-            this.txtIdDeletedNetwork.Name = "txtIdDeletedNetwork";
-            this.txtIdDeletedNetwork.Size = new System.Drawing.Size(111, 20);
-            this.txtIdDeletedNetwork.TabIndex = 1;
+            this.btnDeleteNetwork.Location = new System.Drawing.Point(7, 40);
+            this.btnDeleteNetwork.Name = "btnDeleteNetwork";
+            this.btnDeleteNetwork.Size = new System.Drawing.Size(155, 23);
+            this.btnDeleteNetwork.TabIndex = 2;
+            this.btnDeleteNetwork.Text = "Удалить нейронную сеть";
+            this.btnDeleteNetwork.UseVisualStyleBackColor = true;
+            this.btnDeleteNetwork.Click += new System.EventHandler(this.btnDeleteNetwork_Click);
             // 
             // label5
             // 
@@ -457,11 +454,31 @@ namespace NumberRecognition_Practice2021
             this.btnCheckNumber.UseVisualStyleBackColor = true;
             this.btnCheckNumber.Click += new System.EventHandler(this.btnCheckNumber_Click);
             // 
+            // cmbNetworkDelete
+            // 
+            this.cmbNetworkDelete.FormattingEnabled = true;
+            this.cmbNetworkDelete.Location = new System.Drawing.Point(38, 10);
+            this.cmbNetworkDelete.Name = "cmbNetworkDelete";
+            this.cmbNetworkDelete.Size = new System.Drawing.Size(121, 21);
+            this.cmbNetworkDelete.TabIndex = 3;
+            this.cmbNetworkDelete.Click += new System.EventHandler(this.cmbNetworkSelection_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1066, 105);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1017, 534);
+            this.ClientSize = new System.Drawing.Size(1180, 534);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
@@ -486,7 +503,6 @@ namespace NumberRecognition_Practice2021
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtIdDeletedNetwork)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
@@ -523,8 +539,7 @@ namespace NumberRecognition_Practice2021
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.NumericUpDown txtIdDeletedNetwork;
+        private System.Windows.Forms.Button btnDeleteNetwork;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnTrainNetwork;
         private System.Windows.Forms.Label label7;
@@ -539,6 +554,8 @@ namespace NumberRecognition_Practice2021
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Button btnCheckNumber;
+        private System.Windows.Forms.ComboBox cmbNetworkDelete;
+        private System.Windows.Forms.Button button1;
     }
 }
 
