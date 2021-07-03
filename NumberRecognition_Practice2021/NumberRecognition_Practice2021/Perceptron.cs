@@ -214,6 +214,29 @@ namespace NumberRecognition_Practice2021
             }
         }
 
+        public static Perceptron GetPerceptronFromByte (byte[] data)
+        {
+            Perceptron p;
+            using (MemoryStream ms = new MemoryStream(data))
+            {
+                var formatter = new BinaryFormatter();
+                ms.Seek(0, SeekOrigin.Begin);
+                p = (Perceptron)formatter.Deserialize(ms);
+            }
+            return p;
+        }
+
+        public static byte[] GetByteFromPerceptron(Perceptron p)
+        {
+            byte[] data;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, p);
+                data = ms.ToArray();
+            }
+            return data;
+        }
         public static Perceptron Load(String neuralNetworkPath)
         {
             //FileStream fs = new FileStream(neuralNetworkPath, FileMode.Open);

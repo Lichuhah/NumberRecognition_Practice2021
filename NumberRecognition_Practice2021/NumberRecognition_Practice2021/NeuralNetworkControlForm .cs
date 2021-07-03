@@ -22,6 +22,11 @@ namespace NumberRecognition_Practice2021
             SetSize();
             graphics.Clear(pictureBox.BackColor);
             pictureBox.Image = map;
+
+            int inputCount = 150;
+            int outputCount = 9;
+            int[] net_def = new int[] { inputCount, 80, outputCount };
+            p = new Perceptron(net_def);
         }
 
 
@@ -85,25 +90,7 @@ namespace NumberRecognition_Practice2021
             input.Add(inputs);
             output.Add(outputs);
 
-            Picture picture = new Picture();
-            picture.Value = Convert.ToInt32(txtAddData.Text);
-            using(var ms = new MemoryStream())
-            {
-                pictureBox.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                picture.Image = ms.ToArray();
-            }
-
-
-            //var WebClient = new WebClient();
-            //WebClient.Encoding = Encoding.UTF8;
-            //string url = "https://localhost:44387/api/Network/" + cmbNetworkSelection.Text;
-            //string json = WebClient.DownloadString(url);
-            //Network network = JsonConvert.DeserializeObject<Network>(json);
-            string json = JsonConvert.SerializeObject(picture);
-            var WebClient = new WebClient();
-            WebClient.Encoding = Encoding.UTF8;
-            WebClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            string response = WebClient.UploadString("https://localhost:44387/api/DataSet/"+network.Id, json);
+            LiteWebClient.PostImage(Convert.ToInt32(txtAddData.Text), pictureBox.Image, network.Id);
         }
 
         Network network;
@@ -112,7 +99,6 @@ namespace NumberRecognition_Practice2021
             int inputCount = 150;
             int outputCount = 9;
             int[] net_def = new int[] { inputCount, 80, outputCount };
-            p = new Perceptron(net_def);
 
             while (!p.Learn(input, output, 0.3, 0.1, 20000, 10000))
             {
@@ -122,18 +108,11 @@ namespace NumberRecognition_Practice2021
 
             network = new Network();
             network.Name = cmbNetworkSelection.Text;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                formatter.Serialize(ms, p);
-                network.Data = ms.ToArray();
-            }
+            network.Data = Perceptron.GetByteFromPerceptron(p);
+
             string json = JsonConvert.SerializeObject(network);
-            var WebClient = new WebClient();
-            WebClient.Encoding = Encoding.UTF8;
-            WebClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var WebClient = LiteWebClient.GetWebClientForJson();
             string response = WebClient.UploadString("https://localhost:44387/api/Network/" + 0, "PUT", json);
-            // p.save_net(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.bin");
         }
 
         static double normalize(double val, double min, double max)
@@ -165,25 +144,12 @@ namespace NumberRecognition_Practice2021
 
         private void btnCreateNewNetwork_Click(object sender, EventArgs e)
         {
-            Network network = new Network();
-            network.Name = txtNewNetworkName.Text;
-            BinaryFormatter formatter = new BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                formatter.Serialize(ms, p);
-                network.Data = ms.ToArray();
-            }
-            string json = JsonConvert.SerializeObject(network);
-            var WebClient = new WebClient();
-            WebClient.Encoding = Encoding.UTF8;
-            WebClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            string response = WebClient.UploadString("https://localhost:44387/api/Network", json);
+            LiteWebClient.PostNetwork(txtNewNetworkName.Text, Perceptron.GetByteFromPerceptron(p));
         }
 
         private void cmbNetworkSelection_Click(object sender, EventArgs e)
         {
-            var WebClient = new WebClient();
-            WebClient.Encoding = Encoding.UTF8;
+            var WebClient = LiteWebClient.GetWebClientForJson();
             string json = WebClient.DownloadString("https://localhost:44387/api/Network");
             List<Network> things = JsonConvert.DeserializeObject<List<Network>>(json);
             cmbNetworkSelection.DataSource = things;
@@ -194,19 +160,8 @@ namespace NumberRecognition_Practice2021
 
         private void btnNetworkSelection_Click(object sender, EventArgs e)
         {
-            var WebClient = new WebClient();
-            WebClient.Encoding = Encoding.UTF8;
-            string url = "https://localhost:44387/api/Network/" + cmbNetworkSelection.Text;
-            string json = WebClient.DownloadString(url);
-            network = JsonConvert.DeserializeObject<Network>(json);
-
-            byte[] data = network.Data;
-            using (MemoryStream ms = new MemoryStream(data))
-            {
-                var formatter = new BinaryFormatter();
-                ms.Seek(0, SeekOrigin.Begin);
-                p = (Perceptron)formatter.Deserialize(ms);
-            }
+            network = LiteWebClient.GetNetwork(cmbNetworkSelection.Text);
+            p = Perceptron.GetPerceptronFromByte(network.Data);
         }
 
         private void btnDeleteNetwork_Click(object sender, EventArgs e)
@@ -218,8 +173,7 @@ namespace NumberRecognition_Practice2021
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var WebClient = new WebClient();
-            WebClient.Encoding = Encoding.UTF8;
+            var WebClient = LiteWebClient.GetWebClientForJson();
             string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+network.Id);
             DataSet things = JsonConvert.DeserializeObject<DataSet>(json);
             dataGridView.DataSource = things.Pictures;

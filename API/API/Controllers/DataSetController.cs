@@ -29,8 +29,7 @@ namespace API.Controllers
             DataSet ds = new DataSet();
             ds.Id = id;
             //List<string> networksNames = new List<string>();
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Picture] JOIN [dbo].[DataSet] ON Picture.Id = DataSet.Id_Picture WHERE DataSet.Id_Network=@id", sqlConnection);
             sqlCommand.Parameters.AddWithValue("id", id);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -51,8 +50,7 @@ namespace API.Controllers
         [HttpPost("{id}")]
         public void Post(int id, [FromBody] Picture picture)
         {
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("INSERT INTO [dbo].[Picture] VALUES (@Value, @Image)", sqlConnection);
             sqlCommand.Parameters.AddWithValue("Value", picture.Value);
             sqlCommand.Parameters.AddWithValue("Image", picture.Image);

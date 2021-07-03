@@ -20,8 +20,7 @@ namespace API.Controllers
         public List<Network> GetNetworks()
         {
             List<Network> networks = new List<Network>();
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Network]", sqlConnection);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
@@ -42,8 +41,7 @@ namespace API.Controllers
         public List<string> GetNames()
         {
             List<string> networksNames = new List<string>();
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT Name FROM [dbo].[Network]", sqlConnection);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
@@ -58,8 +56,7 @@ namespace API.Controllers
         [HttpGet("{name}")]
         public Network Get(string name)
         {
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Network] WHERE Name=@name", sqlConnection);
             sqlCommand.Parameters.AddWithValue("name", name);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -77,8 +74,7 @@ namespace API.Controllers
         [HttpPost]
         public void Post([FromBody] Network network)
         {
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("INSERT INTO [dbo].[Network] VALUES (@name, @data)", sqlConnection);
             sqlCommand.Parameters.AddWithValue("name", network.Name);
             sqlCommand.Parameters.AddWithValue("data", network.Data);
@@ -90,8 +86,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Network network)
         {
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("UPDATE [dbo].[Network] SET Data=@data WHERE Name=@name", sqlConnection);
             sqlCommand.Parameters.AddWithValue("name", network.Name);
             sqlCommand.Parameters.AddWithValue("data", network.Data);
@@ -103,8 +98,7 @@ namespace API.Controllers
         [HttpDelete("{name}")]
         public void Delete(string name)
         {
-            SqlConnection sqlConnection = new SqlConnection("Data Source=DESKTOP-FC16M2F;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
-            sqlConnection.Open();
+            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("DELETE FROM [dbo].[Network] WHERE Name=@name", sqlConnection);
             sqlCommand.Parameters.AddWithValue("name", name);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();

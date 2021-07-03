@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -69,7 +70,7 @@ namespace NumberRecognition_Practice2021
             result.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\testCROP.jpg");
             return result;
         }
-        static public double getDoubleFromColor(Color color)
+        static public double GetDoubleFromColor(Color color)
         {
             double a = Convert.ToDouble(color.R + color.G + color.B) / 765;
             return a;
@@ -86,7 +87,7 @@ namespace NumberRecognition_Practice2021
             {
                 for (int j = 0; j < outmap.Width; j++)
                 {
-                    double a = getDoubleFromColor(outmap.GetPixel(j, i));
+                    double a = GetDoubleFromColor(outmap.GetPixel(j, i));
                     inputs[i * 10 + j] = a;
                 }
             }
@@ -105,7 +106,7 @@ namespace NumberRecognition_Practice2021
                 for (int j = 0; j < pic.Width; j++)
                 {
                     //double temp = img.GetPixel(j, i).A / 255;
-                    double temp = getDoubleFromColor(img.GetPixel(j, i));
+                    double temp = GetDoubleFromColor(img.GetPixel(j, i));
                     if (temp < 0.8)
                     {
                         borders[0].Y = i;
@@ -120,7 +121,7 @@ namespace NumberRecognition_Practice2021
                 for (int j = pic.Width - 1; j > 0; j--)
                 {
                     //double temp = img.GetPixel(j, i).A / 255;
-                    double temp = getDoubleFromColor(img.GetPixel(j, i));
+                    double temp =GetDoubleFromColor(img.GetPixel(j, i));
                     if (temp < 0.8)
                     {
                         borders[1].Y = i;
@@ -135,7 +136,7 @@ namespace NumberRecognition_Practice2021
                 for (int j = 0; j < pic.Height; j++)
                 {
                     //double temp = img.GetPixel(j, i).A / 255;
-                    double temp = getDoubleFromColor(img.GetPixel(i, j));
+                    double temp = GetDoubleFromColor(img.GetPixel(i, j));
                     if (temp < 0.8)
                     {
                         borders[0].X = i;
@@ -150,7 +151,7 @@ namespace NumberRecognition_Practice2021
                 for (int j = pic.Height - 1; j > 0; j--)
                 {
                     //double temp = img.GetPixel(j, i).A / 255;
-                    double temp = getDoubleFromColor(img.GetPixel(i, j));
+                    double temp = GetDoubleFromColor(img.GetPixel(i, j));
                     if (temp < 0.8)
                     {
                         borders[1].X = i;
@@ -161,6 +162,15 @@ namespace NumberRecognition_Practice2021
             }
 
             return borders;
+        }
+
+        static public byte[] GetByteFromImage(Image pic)
+        {
+            using (var ms = new MemoryStream())
+            {
+                pic.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
         }
     }
 }
