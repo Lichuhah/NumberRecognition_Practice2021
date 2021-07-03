@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace NumberRecognition_Practice2021
 {
@@ -78,7 +79,11 @@ namespace NumberRecognition_Practice2021
         static public double[] FromImageToInputs(Image pic)
         {
             pic.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test.jpg");
-            Image outimg = ImageProcessor.ScaleImage(pic, 10, 15);
+            Image outimg = pic;
+            if (pic.Width != 10 && pic.Height != 15)
+            {
+                outimg = ImageProcessor.ScaleImage(pic, 10, 15);
+            }
             outimg.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test2.jpg");
             Bitmap outmap = new Bitmap(outimg);
             double[] inputs = new double[150];
@@ -94,6 +99,7 @@ namespace NumberRecognition_Practice2021
 
             return inputs;
         }
+
 
         static public Point[] FindImageBordes(Image pic)
         {
@@ -170,6 +176,14 @@ namespace NumberRecognition_Practice2021
             {
                 pic.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 return ms.ToArray();
+            }
+        }
+
+        static public Image GetImageFromByte(byte[] data)
+        {
+            using (var ms = new MemoryStream(data))
+            {
+                return Image.FromStream(ms);
             }
         }
     }

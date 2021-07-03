@@ -147,11 +147,15 @@ namespace NumberRecognition_Practice2021
         List<string> log;
         public bool Learn(List<double[]> input, List<double[]> desiredOutput, double alpha, double maxError, int maxIterations, int iter_save = 1)
         {
+            //  Random rnd = new Random();
+            //  alpha = rnd.NextDouble() + 0.1;
+            alpha = 0.5;
             double err = 99999;
             log = new List<string>();
             int it = maxIterations;
             while (err > maxError)
             {
+
                 ApplyBackPropagation(input, desiredOutput, alpha);
                 err = GeneralError(input, desiredOutput);
 
@@ -179,7 +183,10 @@ namespace NumberRecognition_Practice2021
                 //    System.IO.File.WriteAllLines(@"LogTail.txt", log.ToArray());
                 //    return true;
                 //}
-
+                if (err > 15)
+                {
+                    return false;
+                }
                 if (maxIterations <= 0)
                 {
                 //    Console.WriteLine("MINIMO LOCAL");

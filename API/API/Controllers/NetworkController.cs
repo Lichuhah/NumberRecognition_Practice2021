@@ -38,27 +38,31 @@ namespace API.Controllers
         // GET api/<NetworkController>/GetNames
         [HttpGet]
         [Route("GetNames")]
-        public List<string> GetNames()
+        public List<Network> GetNames()
         {
-            List<string> networksNames = new List<string>();
+            List<Network> networksNames = new List<Network>();
             SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
-            SqlCommand sqlCommand = new SqlCommand("SELECT Name FROM [dbo].[Network]", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("SELECT Id,Name FROM [dbo].[Network]", sqlConnection);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
             {
-                networksNames.Add(sqlDataReader[0].ToString());
+                Network n = new Network();
+                n.Id = (int)sqlDataReader[0];
+                n.Name = sqlDataReader[1].ToString();
+                n.Data = null;
+                networksNames.Add(n);
             }
             sqlConnection.Close();
             return networksNames;
         }
 
         // GET api/<NetworkController>/5
-        [HttpGet("{name}")]
-        public Network Get(string name)
+        [HttpGet("{id}")]
+        public Network Get(int id)
         {
             SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
-            SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Network] WHERE Name=@name", sqlConnection);
-            sqlCommand.Parameters.AddWithValue("name", name);
+            SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Network] WHERE Id=@id", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("id", id);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             sqlDataReader.Read();
             Network network = new Network();
@@ -87,20 +91,20 @@ namespace API.Controllers
         public void Put(int id, [FromBody] Network network)
         {
             SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
-            SqlCommand sqlCommand = new SqlCommand("UPDATE [dbo].[Network] SET Data=@data WHERE Name=@name", sqlConnection);
-            sqlCommand.Parameters.AddWithValue("name", network.Name);
+            SqlCommand sqlCommand = new SqlCommand("UPDATE [dbo].[Network] SET Data=@data WHERE Id=@id", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("id", network.Id);
             sqlCommand.Parameters.AddWithValue("data", network.Data);
             sqlCommand.ExecuteNonQuery();
             sqlConnection.Close();
         }
 
         // DELETE api/<NetworkController>/5
-        [HttpDelete("{name}")]
-        public void Delete(string name)
+        [HttpDelete("{id}")]
+        public void Delete(int id)
         {
             SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
-            SqlCommand sqlCommand = new SqlCommand("DELETE FROM [dbo].[Network] WHERE Name=@name", sqlConnection);
-            sqlCommand.Parameters.AddWithValue("name", name);
+            SqlCommand sqlCommand = new SqlCommand("DELETE FROM [dbo].[Network] WHERE Id=@id", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("id", id);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
         }
     }

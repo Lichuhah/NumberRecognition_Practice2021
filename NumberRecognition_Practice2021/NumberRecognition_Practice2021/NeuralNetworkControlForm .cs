@@ -16,38 +16,52 @@ namespace NumberRecognition_Practice2021
 {
     public partial class Form1 : Form
     {
+        private Network network;
+        private Bitmap map = new Bitmap(100, 100);
+        private Graphics graphics;
+        private Pen pen = new Pen(Color.Black, 20f);
+        private bool isMouse = false;
+        private ArrayPoints arrayPoints = new ArrayPoints(2);
+        private Perceptron p;
+        private List<double[]> input = new List<double[]>();
+        private List<double[]> output = new List<double[]>();
+
+
         public Form1()
         {
             InitializeComponent();
             SetSize();
-            graphics.Clear(pictureBox.BackColor);
-            pictureBox.Image = map;
+            
+           
 
             int inputCount = 150;
-            int outputCount = 9;
-            int[] net_def = new int[] { inputCount, 80, outputCount };
+            int outputCount = 10;
+            int[] net_def = new int[] { inputCount, 12,12, outputCount };
             p = new Perceptron(net_def);
         }
 
-
-
-        private bool isMouse = false;
-        private ArrayPoints arrayPoints = new ArrayPoints(2);
-
-        Bitmap map = new Bitmap(100, 100);
-        Graphics graphics;
-        Pen pen = new Pen(Color.Black, 20f);
 
         private void SetSize()
         {
             Rectangle rectangle = Screen.PrimaryScreen.Bounds;
             map = new Bitmap(pictureBox.Width, pictureBox.Height);
             graphics = Graphics.FromImage(map);
+            graphics.Clear(pictureBox.BackColor);
+            pictureBox.Image = map;
+            pen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+            pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
             isMouse = true;
+            if (e.Button == MouseButtons.Left)
+            {
+                pen.Color = Color.Black;
+            } else
+            {
+                pen.Color = Color.White;
+            }
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
@@ -79,9 +93,7 @@ namespace NumberRecognition_Practice2021
         }
 
 
-        Perceptron p;
-        List<double[]> input = new List<double[]>();
-        List<double[]> output = new List<double[]>();
+
         private void btnAddData_Click(object sender, EventArgs e)
         {
             double[] inputs = ImageProcessor.FromImageToInputs(pictureBox.Image);
@@ -89,30 +101,28 @@ namespace NumberRecognition_Practice2021
             outputs[Convert.ToInt32(txtAddData.Text)] = 1;
             input.Add(inputs);
             output.Add(outputs);
-
-            LiteWebClient.PostImage(Convert.ToInt32(txtAddData.Text), pictureBox.Image, network.Id);
+            Image img = ImageProcessor.ScaleImage(pictureBox.Image, 10, 15);
+            LiteWebClient.PostImage(Convert.ToInt32(txtAddData.Text), img , network.Id);
+            img.Save(@"C:\Users\belov\Desktop\NumberRecognition_Practice2021\test3.jpg");
         }
 
-        Network network;
+       
         private void btnTrainNetwork_Click(object sender, EventArgs e)
         {
             int inputCount = 150;
-            int outputCount = 9;
-            int[] net_def = new int[] { inputCount, 80, outputCount };
+            int outputCount = 10;
+            int[] net_def = new int[] { inputCount, 60 ,outputCount };
 
-            while (!p.Learn(input, output, 0.3, 0.1, 20000, 10000))
+            while (!p.Learn(input, output, 0.33, 1, 40000, 10000))
             {
                 p = new Perceptron(net_def);
             }
 
-
-            network = new Network();
-            network.Name = cmbNetworkSelection.Text;
             network.Data = Perceptron.GetByteFromPerceptron(p);
 
             string json = JsonConvert.SerializeObject(network);
             var WebClient = LiteWebClient.GetWebClientForJson();
-            string response = WebClient.UploadString("https://localhost:44387/api/Network/" + 0, "PUT", json);
+            string response = WebClient.UploadString("https://localhost:44387/api/Network/" + ((Network)cmbNetworkDelete.SelectedItem).Id, "PUT", json);
         }
 
         static double normalize(double val, double min, double max)
@@ -131,7 +141,7 @@ namespace NumberRecognition_Practice2021
 
             lblResult.Text = "";
             int max = 0;
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 10; i++)
             {
                 if (sal[max] < sal[i])
                 {
@@ -150,7 +160,7 @@ namespace NumberRecognition_Practice2021
         private void cmbNetworkSelection_Click(object sender, EventArgs e)
         {
             var WebClient = LiteWebClient.GetWebClientForJson();
-            string json = WebClient.DownloadString("https://localhost:44387/api/Network");
+            string json = WebClient.DownloadString("https://localhost:44387/api/Network/GetNames");
             List<Network> things = JsonConvert.DeserializeObject<List<Network>>(json);
             cmbNetworkSelection.DataSource = things;
             cmbNetworkSelection.DisplayMember = "Name";
@@ -160,23 +170,41 @@ namespace NumberRecognition_Practice2021
 
         private void btnNetworkSelection_Click(object sender, EventArgs e)
         {
-            network = LiteWebClient.GetNetwork(cmbNetworkSelection.Text);
+            network = LiteWebClient.GetPerceptron((Network)cmbNetworkSelection.SelectedItem);
             p = Perceptron.GetPerceptronFromByte(network.Data);
+            btnAddData.Enabled = true;
+            btnCheckNumber.Enabled = true;
+            btnTrainNetwork.Enabled = true;
+            btnDeleteData.Enabled = true;
         }
 
         private void btnDeleteNetwork_Click(object sender, EventArgs e)
         {
             var WebClient = new WebClient();
             WebClient.Encoding = Encoding.UTF8;
-            string json = WebClient.UploadString("https://localhost:44387/api/Network/" + cmbNetworkDelete.Text, "DELETE", "");
+            string json = WebClient.UploadString("https://localhost:44387/api/Network/" + ((Network)cmbNetworkDelete.SelectedItem).Id, "DELETE", "");
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnLoadDataSet_Click(object sender, EventArgs e)
         {
             var WebClient = LiteWebClient.GetWebClientForJson();
-            string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+network.Id);
-            DataSet things = JsonConvert.DeserializeObject<DataSet>(json);
-            dataGridView.DataSource = things.Pictures;
+            string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+10);
+            DataSet dataSets = JsonConvert.DeserializeObject<DataSet>(json);
+            dataGridView.DataSource = dataSets.Pictures;
+
+            input.Clear();
+            output.Clear();
+            for(int i=0; i<dataSets.Pictures.Count; i++)
+            {
+                Image img = ImageProcessor.GetImageFromByte(dataSets.Pictures[i].Image);
+                double[] inputs = ImageProcessor.FromImageToInputs(img);
+                double[] outputs = new double[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                outputs[dataSets.Pictures[i].Value] = 1;
+                input.Add(inputs);
+                output.Add(outputs);
+            }
+
         }
+
     }
 }

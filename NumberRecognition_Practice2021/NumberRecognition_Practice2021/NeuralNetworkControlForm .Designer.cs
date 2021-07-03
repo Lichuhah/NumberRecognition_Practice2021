@@ -35,7 +35,7 @@ namespace NumberRecognition_Practice2021
             this.btnClearPictureBox = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button7 = new System.Windows.Forms.Button();
+            this.btnDeleteData = new System.Windows.Forms.Button();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.btnAddData = new System.Windows.Forms.Button();
@@ -52,6 +52,7 @@ namespace NumberRecognition_Practice2021
             this.txtNewNetworkName = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.cmbNetworkDelete = new System.Windows.Forms.ComboBox();
             this.btnDeleteNetwork = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.btnTrainNetwork = new System.Windows.Forms.Button();
@@ -60,15 +61,14 @@ namespace NumberRecognition_Practice2021
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.lblCountOfIterations = new System.Windows.Forms.Label();
-            this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown5 = new System.Windows.Forms.NumericUpDown();
+            this.numAlpha = new System.Windows.Forms.NumericUpDown();
+            this.numError = new System.Windows.Forms.NumericUpDown();
+            this.numIterations = new System.Windows.Forms.NumericUpDown();
             this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.lblResult = new System.Windows.Forms.Label();
             this.btnCheckNumber = new System.Windows.Forms.Button();
-            this.cmbNetworkDelete = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnLoadDataSet = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -78,9 +78,9 @@ namespace NumberRecognition_Practice2021
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAlpha)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numError)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numIterations)).BeginInit();
             this.panel7.SuspendLayout();
             this.panel8.SuspendLayout();
             this.SuspendLayout();
@@ -138,7 +138,8 @@ namespace NumberRecognition_Practice2021
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.button7);
+            this.panel2.Controls.Add(this.btnLoadDataSet);
+            this.panel2.Controls.Add(this.btnDeleteData);
             this.panel2.Controls.Add(this.numericUpDown2);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.btnAddData);
@@ -146,21 +147,22 @@ namespace NumberRecognition_Practice2021
             this.panel2.Controls.Add(this.label2);
             this.panel2.Location = new System.Drawing.Point(288, 96);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(267, 135);
+            this.panel2.Size = new System.Drawing.Size(267, 163);
             this.panel2.TabIndex = 5;
             // 
-            // button7
+            // btnDeleteData
             // 
-            this.button7.Location = new System.Drawing.Point(7, 103);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(252, 23);
-            this.button7.TabIndex = 5;
-            this.button7.Text = "Удалить значение";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btnDeleteData.Enabled = false;
+            this.btnDeleteData.Location = new System.Drawing.Point(7, 137);
+            this.btnDeleteData.Name = "btnDeleteData";
+            this.btnDeleteData.Size = new System.Drawing.Size(252, 23);
+            this.btnDeleteData.TabIndex = 5;
+            this.btnDeleteData.Text = "Удалить значение";
+            this.btnDeleteData.UseVisualStyleBackColor = true;
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(69, 74);
+            this.numericUpDown2.Location = new System.Drawing.Point(68, 111);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(190, 20);
             this.numericUpDown2.TabIndex = 4;
@@ -168,7 +170,7 @@ namespace NumberRecognition_Practice2021
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 77);
+            this.label6.Location = new System.Drawing.Point(4, 113);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(19, 13);
             this.label6.TabIndex = 3;
@@ -176,7 +178,8 @@ namespace NumberRecognition_Practice2021
             // 
             // btnAddData
             // 
-            this.btnAddData.Location = new System.Drawing.Point(3, 45);
+            this.btnAddData.Enabled = false;
+            this.btnAddData.Location = new System.Drawing.Point(2, 82);
             this.btnAddData.Name = "btnAddData";
             this.btnAddData.Size = new System.Drawing.Size(256, 23);
             this.btnAddData.TabIndex = 2;
@@ -186,7 +189,7 @@ namespace NumberRecognition_Practice2021
             // 
             // txtAddData
             // 
-            this.txtAddData.Location = new System.Drawing.Point(68, 13);
+            this.txtAddData.Location = new System.Drawing.Point(67, 56);
             this.txtAddData.Name = "txtAddData";
             this.txtAddData.Size = new System.Drawing.Size(191, 20);
             this.txtAddData.TabIndex = 1;
@@ -194,7 +197,7 @@ namespace NumberRecognition_Practice2021
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 16);
+            this.label2.Location = new System.Drawing.Point(4, 59);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 0;
@@ -302,6 +305,15 @@ namespace NumberRecognition_Practice2021
             this.panel6.Size = new System.Drawing.Size(162, 75);
             this.panel6.TabIndex = 9;
             // 
+            // cmbNetworkDelete
+            // 
+            this.cmbNetworkDelete.FormattingEnabled = true;
+            this.cmbNetworkDelete.Location = new System.Drawing.Point(38, 10);
+            this.cmbNetworkDelete.Name = "cmbNetworkDelete";
+            this.cmbNetworkDelete.Size = new System.Drawing.Size(121, 21);
+            this.cmbNetworkDelete.TabIndex = 3;
+            this.cmbNetworkDelete.Click += new System.EventHandler(this.cmbNetworkSelection_Click);
+            // 
             // btnDeleteNetwork
             // 
             this.btnDeleteNetwork.Location = new System.Drawing.Point(7, 40);
@@ -323,6 +335,7 @@ namespace NumberRecognition_Practice2021
             // 
             // btnTrainNetwork
             // 
+            this.btnTrainNetwork.Enabled = false;
             this.btnTrainNetwork.Location = new System.Drawing.Point(3, 106);
             this.btnTrainNetwork.Name = "btnTrainNetwork";
             this.btnTrainNetwork.Size = new System.Drawing.Size(256, 23);
@@ -376,51 +389,56 @@ namespace NumberRecognition_Practice2021
             this.lblCountOfIterations.TabIndex = 14;
             this.lblCountOfIterations.Text = "0";
             // 
-            // numericUpDown3
+            // numAlpha
             // 
-            this.numericUpDown3.DecimalPlaces = 2;
-            this.numericUpDown3.Increment = new decimal(new int[] {
+            this.numAlpha.DecimalPlaces = 2;
+            this.numAlpha.Increment = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.numericUpDown3.Location = new System.Drawing.Point(69, 10);
-            this.numericUpDown3.Maximum = new decimal(new int[] {
+            this.numAlpha.Location = new System.Drawing.Point(69, 10);
+            this.numAlpha.Maximum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(190, 20);
-            this.numericUpDown3.TabIndex = 15;
+            this.numAlpha.Name = "numAlpha";
+            this.numAlpha.Size = new System.Drawing.Size(190, 20);
+            this.numAlpha.TabIndex = 15;
             // 
-            // numericUpDown4
+            // numError
             // 
-            this.numericUpDown4.DecimalPlaces = 5;
-            this.numericUpDown4.Location = new System.Drawing.Point(69, 44);
-            this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(190, 20);
-            this.numericUpDown4.TabIndex = 16;
+            this.numError.DecimalPlaces = 5;
+            this.numError.Location = new System.Drawing.Point(69, 44);
+            this.numError.Name = "numError";
+            this.numError.Size = new System.Drawing.Size(190, 20);
+            this.numError.TabIndex = 16;
             // 
-            // numericUpDown5
+            // numIterations
             // 
-            this.numericUpDown5.Location = new System.Drawing.Point(69, 80);
-            this.numericUpDown5.Name = "numericUpDown5";
-            this.numericUpDown5.Size = new System.Drawing.Size(190, 20);
-            this.numericUpDown5.TabIndex = 17;
+            this.numIterations.Location = new System.Drawing.Point(69, 80);
+            this.numIterations.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.numIterations.Name = "numIterations";
+            this.numIterations.Size = new System.Drawing.Size(190, 20);
+            this.numIterations.TabIndex = 17;
             // 
             // panel7
             // 
             this.panel7.Controls.Add(this.label7);
             this.panel7.Controls.Add(this.lblCountOfIterations);
-            this.panel7.Controls.Add(this.numericUpDown5);
+            this.panel7.Controls.Add(this.numIterations);
             this.panel7.Controls.Add(this.btnTrainNetwork);
             this.panel7.Controls.Add(this.label10);
-            this.panel7.Controls.Add(this.numericUpDown3);
-            this.panel7.Controls.Add(this.numericUpDown4);
+            this.panel7.Controls.Add(this.numAlpha);
+            this.panel7.Controls.Add(this.numError);
             this.panel7.Controls.Add(this.label8);
             this.panel7.Controls.Add(this.label9);
-            this.panel7.Location = new System.Drawing.Point(288, 238);
+            this.panel7.Location = new System.Drawing.Point(288, 265);
             this.panel7.Name = "panel7";
             this.panel7.Size = new System.Drawing.Size(267, 161);
             this.panel7.TabIndex = 18;
@@ -429,16 +447,16 @@ namespace NumberRecognition_Practice2021
             // 
             this.panel8.Controls.Add(this.lblResult);
             this.panel8.Controls.Add(this.btnCheckNumber);
-            this.panel8.Location = new System.Drawing.Point(288, 405);
+            this.panel8.Location = new System.Drawing.Point(288, 432);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(267, 114);
+            this.panel8.Size = new System.Drawing.Size(267, 87);
             this.panel8.TabIndex = 19;
             // 
             // lblResult
             // 
             this.lblResult.AutoSize = true;
             this.lblResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblResult.Location = new System.Drawing.Point(105, 16);
+            this.lblResult.Location = new System.Drawing.Point(105, 6);
             this.lblResult.Name = "lblResult";
             this.lblResult.Size = new System.Drawing.Size(51, 55);
             this.lblResult.TabIndex = 2;
@@ -446,7 +464,8 @@ namespace NumberRecognition_Practice2021
             // 
             // btnCheckNumber
             // 
-            this.btnCheckNumber.Location = new System.Drawing.Point(3, 91);
+            this.btnCheckNumber.Enabled = false;
+            this.btnCheckNumber.Location = new System.Drawing.Point(3, 64);
             this.btnCheckNumber.Name = "btnCheckNumber";
             this.btnCheckNumber.Size = new System.Drawing.Size(256, 23);
             this.btnCheckNumber.TabIndex = 1;
@@ -454,31 +473,21 @@ namespace NumberRecognition_Practice2021
             this.btnCheckNumber.UseVisualStyleBackColor = true;
             this.btnCheckNumber.Click += new System.EventHandler(this.btnCheckNumber_Click);
             // 
-            // cmbNetworkDelete
+            // btnLoadDataSet
             // 
-            this.cmbNetworkDelete.FormattingEnabled = true;
-            this.cmbNetworkDelete.Location = new System.Drawing.Point(38, 10);
-            this.cmbNetworkDelete.Name = "cmbNetworkDelete";
-            this.cmbNetworkDelete.Size = new System.Drawing.Size(121, 21);
-            this.cmbNetworkDelete.TabIndex = 3;
-            this.cmbNetworkDelete.Click += new System.EventHandler(this.cmbNetworkSelection_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1066, 105);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLoadDataSet.Location = new System.Drawing.Point(3, 16);
+            this.btnLoadDataSet.Name = "btnLoadDataSet";
+            this.btnLoadDataSet.Size = new System.Drawing.Size(256, 23);
+            this.btnLoadDataSet.TabIndex = 20;
+            this.btnLoadDataSet.Text = "Выгрузить датасет";
+            this.btnLoadDataSet.UseVisualStyleBackColor = true;
+            this.btnLoadDataSet.Click += new System.EventHandler(this.btnLoadDataSet_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1180, 534);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1027, 534);
             this.Controls.Add(this.panel8);
             this.Controls.Add(this.panel7);
             this.Controls.Add(this.panel6);
@@ -503,9 +512,9 @@ namespace NumberRecognition_Practice2021
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAlpha)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numError)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numIterations)).EndInit();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel8.ResumeLayout(false);
@@ -535,7 +544,7 @@ namespace NumberRecognition_Practice2021
         private System.Windows.Forms.Button btnCreateNewNetwork;
         private System.Windows.Forms.TextBox txtNewNetworkName;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btnDeleteData;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Panel panel6;
@@ -547,15 +556,15 @@ namespace NumberRecognition_Practice2021
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblCountOfIterations;
-        private System.Windows.Forms.NumericUpDown numericUpDown3;
-        private System.Windows.Forms.NumericUpDown numericUpDown4;
-        private System.Windows.Forms.NumericUpDown numericUpDown5;
+        private System.Windows.Forms.NumericUpDown numAlpha;
+        private System.Windows.Forms.NumericUpDown numError;
+        private System.Windows.Forms.NumericUpDown numIterations;
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Label lblResult;
         private System.Windows.Forms.Button btnCheckNumber;
         private System.Windows.Forms.ComboBox cmbNetworkDelete;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLoadDataSet;
     }
 }
 

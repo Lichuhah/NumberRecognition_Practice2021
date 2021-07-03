@@ -45,10 +45,10 @@ namespace NumberRecognition_Practice2021
             string response = WebClient.UploadString("https://localhost:44387/api/Network", json);
         }
 
-        static public Network GetNetwork(string id)
+        static public Network GetPerceptron(Network net)
         {
             var WebClient = LiteWebClient.GetWebClientForJson();
-            string url = "https://localhost:44387/api/Network/" + id;
+            string url = "https://localhost:44387/api/Network/" + net.Id;
             string json = WebClient.DownloadString(url);
             return JsonConvert.DeserializeObject<Network>(json);
         }
