@@ -14,7 +14,7 @@ namespace NumberRecognition_Practice2021
         public double bias; //сдвиг
         public static double Sigmoid(double input)//сигмоида
         {
-            return 1 / (1 + Math.Exp(-input));
+             return 1 / (1 + Math.Exp(-input));
         }
         public static double SigmoidDerivated(double input)//производная от сигмоиды
         {
@@ -24,14 +24,14 @@ namespace NumberRecognition_Practice2021
 
         public Neuron(int numberOfInputs, Random r) //конструктор (кол-во входов, рандом)
         {
-             bias = 10 * r.NextDouble() - 5;
-            //bias = 5*r.NextDouble()-2.5;
+             //bias = 10 * r.NextDouble() - 5;
+            bias = 5*r.NextDouble()-2.5;
             //bias = 0;
             weights = new double[numberOfInputs];
             for (int i = 0; i < numberOfInputs; i++)
             {
-                weights[i] = 10 * r.NextDouble() - 5;
-               // weights[i] = 5*r.NextDouble()-2.5;
+               // weights[i] = 10 * r.NextDouble() - 5;
+                weights[i] = 5*r.NextDouble()-2.5;
                // weights[i] = 0;
             }
         }

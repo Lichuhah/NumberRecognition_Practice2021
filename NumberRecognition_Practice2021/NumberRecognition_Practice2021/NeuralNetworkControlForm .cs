@@ -36,7 +36,7 @@ namespace NumberRecognition_Practice2021
 
             int inputCount = 150;
             int outputCount = 10;
-            int[] net_def = new int[] { inputCount, 12,12, outputCount };
+            int[] net_def = new int[] { inputCount,24 ,outputCount };
             p = new Perceptron(net_def);
         }
 
@@ -111,9 +111,9 @@ namespace NumberRecognition_Practice2021
         {
             int inputCount = 150;
             int outputCount = 10;
-            int[] net_def = new int[] { inputCount, 60 ,outputCount };
+            int[] net_def = new int[] { inputCount ,30,outputCount };
 
-            while (!p.Learn(input, output, 0.33, 1, 40000, 10000))
+            while (!p.Learn(input, output, 0.8, 0.3, 30000, 10000))
             {
                 p = new Perceptron(net_def);
             }
@@ -188,7 +188,7 @@ namespace NumberRecognition_Practice2021
         private void btnLoadDataSet_Click(object sender, EventArgs e)
         {
             var WebClient = LiteWebClient.GetWebClientForJson();
-            string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+10);
+            string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+19);
             DataSet dataSets = JsonConvert.DeserializeObject<DataSet>(json);
             dataGridView.DataSource = dataSets.Pictures;
 

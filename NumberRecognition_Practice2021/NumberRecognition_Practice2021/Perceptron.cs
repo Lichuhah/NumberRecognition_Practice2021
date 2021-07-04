@@ -149,7 +149,7 @@ namespace NumberRecognition_Practice2021
         {
             //  Random rnd = new Random();
             //  alpha = rnd.NextDouble() + 0.1;
-            alpha = 0.5;
+            alpha = 0.3;
             double err = 99999;
             log = new List<string>();
             int it = maxIterations;
@@ -183,10 +183,10 @@ namespace NumberRecognition_Practice2021
                 //    System.IO.File.WriteAllLines(@"LogTail.txt", log.ToArray());
                 //    return true;
                 //}
-                if (err > 15)
-                {
-                    return false;
-                }
+                //if (err > 15)
+                //{
+                //    return false;
+                //}
                 if (maxIterations <= 0)
                 {
                 //    Console.WriteLine("MINIMO LOCAL");
