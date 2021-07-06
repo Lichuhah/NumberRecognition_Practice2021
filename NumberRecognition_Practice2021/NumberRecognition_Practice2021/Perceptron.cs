@@ -32,6 +32,7 @@ namespace NumberRecognition_Practice2021
                 outputs = layers[i].Activate(inputs);
                 inputs = outputs;
             }
+
             return outputs;
         }
 

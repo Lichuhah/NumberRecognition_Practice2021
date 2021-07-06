@@ -188,7 +188,7 @@ namespace NumberRecognition_Practice2021
         private void btnLoadDataSet_Click(object sender, EventArgs e)
         {
             var WebClient = LiteWebClient.GetWebClientForJson();
-            string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+19);
+            string json = WebClient.DownloadString("https://localhost:44387/api/DataSet/"+network.Id);
             DataSet dataSets = JsonConvert.DeserializeObject<DataSet>(json);
             dataGridView.DataSource = dataSets.Pictures;
 
