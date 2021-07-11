@@ -23,7 +23,6 @@ namespace NumberRecognition_Practice2021
                 layers.Add(new Layer(neuronsPerlayer[i], i == 0 ? neuronsPerlayer[i] : neuronsPerlayer[i - 1], r));
             }
         }
-
         public double[] Activate(double[] inputs)
         {
             double[] outputs = new double[0];
@@ -35,7 +34,6 @@ namespace NumberRecognition_Practice2021
 
             return outputs;
         }
-
         double IndividualError(double[] realOutput, double[] desiredOutput)
         {
             double err = 0;
@@ -85,7 +83,6 @@ namespace NumberRecognition_Practice2021
                 }
             }
         }
-
         void SetDeltas()
         {
             deltas = new List<double[,]>();
@@ -94,7 +91,6 @@ namespace NumberRecognition_Practice2021
                 deltas.Add(new double[layers[i].numberOfNeurons, layers[i].neurons[0].weights.Length]);
             }
         }
-
         void AddDelta()
         {
             for (int i = 1; i < layers.Count; i++)
@@ -144,84 +140,33 @@ namespace NumberRecognition_Practice2021
             UpdateWeights(alpha);
 
         }
-
-        List<string> log;
-        public bool Learn(List<double[]> input, List<double[]> desiredOutput, double alpha, double maxError, int maxIterations, int iter_save = 1)
+        public bool Learn(ref object isNotStop, List<double[]> input, List<double[]> desiredOutput, double alpha, double maxError, int maxIterations, int iter_save = 1)
         {
-            //  Random rnd = new Random();
-            //  alpha = rnd.NextDouble() + 0.1;
             alpha = 0.3;
             double err = 99999;
-            log = new List<string>();
             int it = maxIterations;
-            while (err > maxError)
+            while ((bool)isNotStop && err > maxError)
             {
 
                 ApplyBackPropagation(input, desiredOutput, alpha);
                 err = GeneralError(input, desiredOutput);
 
-
-                // if ((it - maxIterations) % 1000 == 0)
-                // {
+                if ((it - maxIterations) % 200 == 0)
+                {
                 Console.WriteLine(err + " iterations: " + (it - maxIterations));
-                // }
+                }
 
-
-                //if (net_path != null)
-                //{
-                //    if ((it - maxIterations) % iter_save == 0)
-                //    {
-                //        save_net(net_path);
-                //        Console.WriteLine("Save net to " + net_path);
-                //    }
-                //}
-
-                log.Add(err.ToString());
                 maxIterations--;
 
-                //if (Console.KeyAvailable)
-                //{
-                //    System.IO.File.WriteAllLines(@"LogTail.txt", log.ToArray());
-                //    return true;
-                //}
-                //if (err > 15)
-                //{
-                //    return false;
-                //}
                 if (maxIterations <= 0)
-                {
-                //    Console.WriteLine("MINIMO LOCAL");
-                //    System.IO.File.WriteAllLines(@"LogTail.txt", log.ToArray());
+                {        
                     return false;
                 }
 
             }
             Console.WriteLine("complete");
-            System.IO.File.WriteAllLines(@"LogTail.txt", log.ToArray());
             return true;
         }
-
-
-
-        public void save_net(String neuralNetworkPath)
-        {
-            FileStream fs = new FileStream(neuralNetworkPath, FileMode.Create);
-            BinaryFormatter formatter = new BinaryFormatter();
-            try
-            {
-                formatter.Serialize(fs, this);
-            }
-            catch (SerializationException e)
-            {
-                Console.WriteLine("Failed to serialize. Reason: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                fs.Close();
-            }
-        }
-
         public static Perceptron GetPerceptronFromByte (byte[] data)
         {
             Perceptron p;
@@ -233,7 +178,6 @@ namespace NumberRecognition_Practice2021
             }
             return p;
         }
-
         public static byte[] GetByteFromPerceptron(Perceptron p)
         {
             byte[] data;
@@ -244,30 +188,6 @@ namespace NumberRecognition_Practice2021
                 data = ms.ToArray();
             }
             return data;
-        }
-        public static Perceptron Load(String neuralNetworkPath)
-        {
-            //FileStream fs = new FileStream(neuralNetworkPath, FileMode.Open);
-            Perceptron p = null;
-            //try
-            //{
-            //    BinaryFormatter formatter = new BinaryFormatter();
-
-            //    // Deserialize the hashtable from the file and 
-            //    // assign the reference to the local variable.
-            //    p = (Perceptron)formatter.Deserialize(fs);
-            //}
-            //catch (SerializationException e)
-            //{
-            //    Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-            //    throw;
-            //}
-            //finally
-            //{
-            //    fs.Close();
-            //}
-
-            return p;
         }
     }
 }

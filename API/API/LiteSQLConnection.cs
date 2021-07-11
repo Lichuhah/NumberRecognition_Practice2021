@@ -8,7 +8,7 @@ namespace API
 {
     static public class LiteSQLConnection
     {
-        static public SqlConnection getSQLConnection()
+        static public SqlConnection GetSQLConnection()
         {
             SqlConnection sqlConnection = new SqlConnection(@"Data Source=LAPTOP-R75QLBQV\SQL;Initial Catalog=BDNeuralNetworks;Integrated Security=True");
             sqlConnection.Open();

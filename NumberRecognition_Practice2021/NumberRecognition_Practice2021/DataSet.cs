@@ -12,7 +12,6 @@ using System.Threading.Tasks;
     public class DataSet
     {
         public int Id { get; set; }
-
         public List<Picture> Pictures { get; set; }
     }
 

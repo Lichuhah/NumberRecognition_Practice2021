@@ -14,22 +14,13 @@ namespace API.Controllers
     [ApiController]
     public class DataSetController : ControllerBase
     {
-        // GET: api/<DataSetController>
-        [HttpGet]
-        public DataSet Get()
-        {
-            DataSet ds = new DataSet();
-            return ds;
-        }
-
         // GET api/<DataSetController>/5
         [HttpGet("{id}")]
         public DataSet Get(int id)
         {
             DataSet ds = new DataSet();
             ds.Id = id;
-            //List<string> networksNames = new List<string>();
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Picture] JOIN [dbo].[DataSet] ON Picture.Id = DataSet.Id_Picture WHERE DataSet.Id_Network=@id", sqlConnection);
             sqlCommand.Parameters.AddWithValue("id", id);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -41,8 +32,7 @@ namespace API.Controllers
                 pic.Image = (byte[])sqlDataReader[2];
                 ds.Pictures.Add(pic);
             }
-            //sqlConnection.Close();
-            //return networksNames;
+            sqlConnection.Close();
             return ds;
         }
 
@@ -50,15 +40,14 @@ namespace API.Controllers
         [HttpPost("{id}")]
         public void Post(int id, [FromBody] Picture picture)
         {
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
+
             SqlCommand sqlCommand = new SqlCommand("INSERT INTO [dbo].[Picture] VALUES (@Value, @Image)", sqlConnection);
             sqlCommand.Parameters.AddWithValue("Value", picture.Value);
             sqlCommand.Parameters.AddWithValue("Image", picture.Image);
             sqlCommand.ExecuteNonQuery();
             sqlCommand.CommandText = "SELECT @@IDENTITY";
             int lastId = Convert.ToInt32(sqlCommand.ExecuteScalar());
-
-
 
             sqlCommand = new SqlCommand("INSERT INTO [dbo].[DataSet] VALUES (@idNet, @idImg)", sqlConnection);
             sqlCommand.Parameters.AddWithValue("idNet", id);
@@ -68,16 +57,23 @@ namespace API.Controllers
             sqlConnection.Close();
         }
 
-        // PUT api/<DataSetController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
         // DELETE api/<DataSetController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
+
+            //удаляем датасет
+            SqlCommand sqlCommand = new SqlCommand("DELETE FROM DataSet WHERE Id_Picture=@id", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("id", id);
+            sqlCommand.ExecuteNonQuery();
+
+
+            //удаляем изображения из датасета
+            sqlCommand.CommandText = "DELETE FROM Picture WHERE Id=@id";
+            sqlCommand.ExecuteNonQuery();
+
+            sqlConnection.Close();
         }
     }
 }

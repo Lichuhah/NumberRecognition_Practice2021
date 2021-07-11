@@ -51,7 +51,6 @@ namespace NumberRecognition_Practice2021
                 return dest;
             }
         }
-
         static public Image CropImage(Image img, Point[] points)
         {
             Bitmap map = new Bitmap(img);
@@ -99,8 +98,6 @@ namespace NumberRecognition_Practice2021
 
             return inputs;
         }
-
-
         static public Point[] FindImageBordes(Image pic)
         {
             Bitmap img = new Bitmap(pic);
@@ -111,7 +108,6 @@ namespace NumberRecognition_Practice2021
             {
                 for (int j = 0; j < pic.Width; j++)
                 {
-                    //double temp = img.GetPixel(j, i).A / 255;
                     double temp = GetDoubleFromColor(img.GetPixel(j, i));
                     if (temp < 0.8)
                     {
@@ -126,7 +122,6 @@ namespace NumberRecognition_Practice2021
             {
                 for (int j = pic.Width - 1; j > 0; j--)
                 {
-                    //double temp = img.GetPixel(j, i).A / 255;
                     double temp =GetDoubleFromColor(img.GetPixel(j, i));
                     if (temp < 0.8)
                     {
@@ -141,7 +136,6 @@ namespace NumberRecognition_Practice2021
             {
                 for (int j = 0; j < pic.Height; j++)
                 {
-                    //double temp = img.GetPixel(j, i).A / 255;
                     double temp = GetDoubleFromColor(img.GetPixel(i, j));
                     if (temp < 0.8)
                     {
@@ -156,7 +150,6 @@ namespace NumberRecognition_Practice2021
             {
                 for (int j = pic.Height - 1; j > 0; j--)
                 {
-                    //double temp = img.GetPixel(j, i).A / 255;
                     double temp = GetDoubleFromColor(img.GetPixel(i, j));
                     if (temp < 0.8)
                     {
@@ -169,7 +162,6 @@ namespace NumberRecognition_Practice2021
 
             return borders;
         }
-
         static public byte[] GetByteFromImage(Image pic)
         {
             using (var ms = new MemoryStream())
@@ -178,7 +170,6 @@ namespace NumberRecognition_Practice2021
                 return ms.ToArray();
             }
         }
-
         static public Image GetImageFromByte(byte[] data)
         {
             using (var ms = new MemoryStream(data))

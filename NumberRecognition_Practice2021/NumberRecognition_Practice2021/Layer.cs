@@ -22,7 +22,6 @@ namespace NumberRecognition_Practice2021
                 neurons.Add(new Neuron(numberOfInputs, r));
             }
         }
-
         public double[] Activate(double[] inputs)
         {
             List<double> outputs = new List<double>();

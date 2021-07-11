@@ -18,7 +18,6 @@ namespace NumberRecognition_Practice2021
             WebClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             return WebClient;
         }
-
         static public void PostImage(int value, Image image, int networkId)
         {
             Picture picture = new Picture();
@@ -29,12 +28,6 @@ namespace NumberRecognition_Practice2021
             var WebClient = LiteWebClient.GetWebClientForJson();
             string response = WebClient.UploadString("https://localhost:44387/api/DataSet/" + networkId, json);
         }
-
-        static public void PutNetwork()
-        {
-
-        }
-
         static public void PostNetwork(string name, byte[] p)
         {
             Network network = new Network();
@@ -44,7 +37,6 @@ namespace NumberRecognition_Practice2021
             var WebClient = LiteWebClient.GetWebClientForJson();
             string response = WebClient.UploadString("https://localhost:44387/api/Network", json);
         }
-
         static public Network GetPerceptron(Network net)
         {
             var WebClient = LiteWebClient.GetWebClientForJson();

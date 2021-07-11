@@ -20,7 +20,7 @@ namespace API.Controllers
         public List<Network> GetNetworks()
         {
             List<Network> networks = new List<Network>();
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Network]", sqlConnection);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
@@ -41,7 +41,7 @@ namespace API.Controllers
         public List<Network> GetNames()
         {
             List<Network> networksNames = new List<Network>();
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT Id,Name FROM [dbo].[Network]", sqlConnection);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
             while (sqlDataReader.Read())
@@ -60,7 +60,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public Network Get(int id)
         {
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("SELECT * FROM [dbo].[Network] WHERE Id=@id", sqlConnection);
             sqlCommand.Parameters.AddWithValue("id", id);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
@@ -78,7 +78,7 @@ namespace API.Controllers
         [HttpPost]
         public void Post([FromBody] Network network)
         {
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("INSERT INTO [dbo].[Network] VALUES (@name, @data)", sqlConnection);
             sqlCommand.Parameters.AddWithValue("name", network.Name);
             sqlCommand.Parameters.AddWithValue("data", network.Data);
@@ -90,7 +90,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] Network network)
         {
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
             SqlCommand sqlCommand = new SqlCommand("UPDATE [dbo].[Network] SET Data=@data WHERE Id=@id", sqlConnection);
             sqlCommand.Parameters.AddWithValue("id", network.Id);
             sqlCommand.Parameters.AddWithValue("data", network.Data);
@@ -102,10 +102,37 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            SqlConnection sqlConnection = LiteSQLConnection.getSQLConnection();
-            SqlCommand sqlCommand = new SqlCommand("DELETE FROM [dbo].[Network] WHERE Id=@id", sqlConnection);
+            SqlConnection sqlConnection = LiteSQLConnection.GetSQLConnection();
+
+            //считываем айди изображений связанных с данной сетью
+            List<int> idPictures = new List<int>();
+            SqlCommand sqlCommand = new SqlCommand("SELECT Id_Picture FROM DataSet WHERE Id_Network=@id",sqlConnection);
             sqlCommand.Parameters.AddWithValue("id", id);
             SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+            while (sqlDataReader.Read())
+            {
+                idPictures.Add((int)sqlDataReader[0]);
+            }
+            sqlDataReader.Close();
+
+            //удаляем датасет
+            sqlCommand.CommandText = "DELETE FROM DataSet WHERE Id_Network=@id";
+            sqlCommand.ExecuteNonQuery();
+
+            //удаляем сеть
+            sqlCommand.CommandText = "DELETE FROM Network WHERE Id=@id";
+            sqlCommand.ExecuteNonQuery();
+
+            //удаляем изображения из датасета
+            sqlCommand.CommandText = "DELETE FROM Picture WHERE Id=@id";
+            for(int i=0; i<idPictures.Count(); i++)
+            {
+                sqlCommand.Parameters.Clear();
+                sqlCommand.Parameters.AddWithValue("id", idPictures[i]);
+                sqlCommand.ExecuteNonQuery();
+            }
+
+            sqlConnection.Close();
         }
     }
 }
